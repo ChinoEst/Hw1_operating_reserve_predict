@@ -10,7 +10,7 @@ if __name__ == '__main__':
     
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--training',
-                       default='台灣電力公司_過去電力供需資訊.csv',
+                       default='本年度每日尖峰備轉容量率.csv',
                        help='input training data file name')
 
 	parser.add_argument('--output',
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	
 
 	# 載入資料
-	train = pd.read_csv('台灣電力公司_過去電力供需資訊.csv', usecols=[3])
+	train = pd.read_csv('台灣電力公司_過去電力供需資訊.csv', usecols=[2])
 	train = train.values
 	train = train.astype('float32')
     
@@ -55,9 +55,9 @@ if __name__ == '__main__':
 		pre = model.predict(pre)
 	output3 = MMS.inverse_transform([March])
     
-    #4月1-10
+    #4月1-14
 	April = [] 
-	for i in range(10):
+	for i in range(14):
 		April.append(pre[-1, 0])
 		pre = model.predict(pre)
 	output4 = MMS.inverse_transform([April])    
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 		writer = csv.writer(csvfile)
 		for i in range(31):
 	  		writer.writerow([date1 + f"{i+1}" , output3[0][i]])
-		for i in range(10):
+		for i in range(14):
 	  		writer.writerow([date2 + f"{i+1}" , output4[0][i]])
     
     
